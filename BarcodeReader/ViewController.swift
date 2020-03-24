@@ -12,7 +12,16 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let photoTap = UITapGestureRecognizer(target: self, action: #selector(hello))
+        photoTap.numberOfTapsRequired = 2
+        self.view.addGestureRecognizer(photoTap)
+        
+        
+    }
+    
+    @objc func hello() {
+        print("Hello")
     }
 
 

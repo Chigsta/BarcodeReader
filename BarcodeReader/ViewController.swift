@@ -9,6 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // Outlets
+    @IBOutlet weak var displayPhoto: UIImageView!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,11 +74,14 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if let image = info[.originalImage] as? UIImage {
-           print(image)
+        if let pickedImage = info[.originalImage] as? UIImage {
+            displayPhoto.image = pickedImage
         } else {
             fatalError("Image not found")
         }
         
+        picker.dismiss(animated: true, completion: nil)
     }
+    
+    
 }

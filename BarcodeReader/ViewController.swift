@@ -64,5 +64,17 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
            prompt.addAction(photoAlbumAction)
            
            self.present(prompt, animated: true, completion: nil)
+        
+            
        }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let image = info[.originalImage] as? UIImage {
+           print(image)
+        } else {
+            fatalError("Image not found")
+        }
+        
+    }
 }

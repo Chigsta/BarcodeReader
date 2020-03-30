@@ -13,21 +13,19 @@ import AVFoundation
 
 class ViewController: UIViewController {
     
-   
+    
     
     // Outlets
-    @IBOutlet weak var displayPhoto: UIImageView!
+ 
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = UIColor.white
         let photoTap = UITapGestureRecognizer(target: self, action: #selector(promptPhoto))
         photoTap.numberOfTapsRequired = 2
         self.view.addGestureRecognizer(photoTap)
         customiseCaptureScreen()
-        
-        
     }
     
     
@@ -83,7 +81,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let pickedImage = info[.originalImage] as? UIImage {
-            displayPhoto.image = pickedImage
+            //displayPhoto.image = pickedImage
             let ciPickedImage = CIImage(image: pickedImage)!
             processImage(using: ciPickedImage)
             
@@ -131,27 +129,6 @@ extension ViewController {
     }
 }
 
-// MARK: - Configure Camera Capture View
-
-extension ViewController {
-    
-    class PreviewView: UIView {
-        
-        override class var layerClass: AnyClass {
-            return AVCaptureVideoPreviewLayer.self
-        }
-        
-         // Convenience wrapper to get layer as its statically known type.
-        
-        var videoPreviewLayer: AVCaptureVideoPreviewLayer{
-            
-            return layer as! AVCaptureVideoPreviewLayer
-        }
-        
-        
-    }
-    
-}
 
 // MARK: - Customise Camera Capture Session
 
@@ -159,8 +136,23 @@ extension ViewController {
     
     func customiseCaptureScreen() {
         
+        let viewHeight = self.view.frame.height
+        let viewWidth = self.view.frame.width
+        let cameraFrameHeight = viewHeight/2
+        let cameraFramWidth = viewWidth
+        let previewCameraFrame = CGRect(x: 0, y: viewHeight/2.5, width: cameraFramWidth, height: cameraFrameHeight)
+        
+        
+        
+        print(viewHeight, viewWidth)
+        
         //Create a capture session
         let captureSession = AVCaptureSession()
+        var previewLayer: AVCaptureVideoPreviewLayer?
+        
+        // Create a DrawLine Instance to Draw View Finder on camera
+        let drawLine = DrawLine(frame: previewCameraFrame)
+        drawLine.updateFrameDimension(frameHeight: cameraFrameHeight, frameWidth: cameraFramWidth)
         
         //Begin configuration
         captureSession.beginConfiguration()
@@ -169,6 +161,8 @@ extension ViewController {
         guard let videoDevice = AVCaptureDevice.default(for: .video) else {
             fatalError("Could not find default video device")
         }
+        
+       
         
         do {
             //Wrap the vidioe device in a capture device input
@@ -190,6 +184,24 @@ extension ViewController {
         captureSession.sessionPreset = .photo
         captureSession.addOutput(photoOutput)
         captureSession.commitConfiguration()
+        
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        
+        self.view.layer.addSublayer(previewLayer!)
+        previewLayer?.videoGravity = .resize
+        previewLayer?.frame = previewCameraFrame
+        self.view.addSubview(drawLine)
+        drawLine.setNeedsDisplay()
+       
+        
+        
+        captureSession.startRunning()
+        
+        
+        
+        
     }
-     
+    
 }
+
+

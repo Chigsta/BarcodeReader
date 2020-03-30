@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,12 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ybw-lJ-QNl">
-                                <rect key="frame" x="0.0" y="431" width="414" height="363"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="363" id="qdQ-te-Rsh"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap twice to wake up camera" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZgF-Bu-LBk">
                                 <rect key="frame" x="96" y="103" width="222" height="21"/>
                                 <constraints>
@@ -34,17 +28,10 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="ZgF-Bu-LBk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="59" id="I8O-El-Gjw"/>
-                            <constraint firstItem="ybw-lJ-QNl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="MMw-gq-fRh"/>
-                            <constraint firstItem="ybw-lJ-QNl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OQe-qw-T7v"/>
-                            <constraint firstItem="ybw-lJ-QNl" firstAttribute="top" secondItem="ZgF-Bu-LBk" secondAttribute="bottom" constant="307" id="aoG-1D-Dhl"/>
-                            <constraint firstItem="ybw-lJ-QNl" firstAttribute="top" secondItem="ZgF-Bu-LBk" secondAttribute="bottom" constant="307" id="gtb-nj-NK0"/>
                             <constraint firstItem="ZgF-Bu-LBk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qOU-2n-on6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <connections>
-                        <outlet property="displayPhoto" destination="ybw-lJ-QNl" id="zRb-qT-3gX"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

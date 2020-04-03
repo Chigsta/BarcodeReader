@@ -17,15 +17,21 @@ class ViewController: UIViewController {
     
     // Outlets
  
+   
+    @IBAction func startScanningPressed(_ sender: UIButton) {
+        
+        performSegue(withIdentifier: "launchScanScreen", sender: self)
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = UIColor.gray
         view.backgroundColor = UIColor.white
         let photoTap = UITapGestureRecognizer(target: self, action: #selector(promptPhoto))
         photoTap.numberOfTapsRequired = 2
         self.view.addGestureRecognizer(photoTap)
-        customiseCaptureScreen()
+        //customiseCaptureScreen()
     }
     
     
@@ -130,78 +136,6 @@ extension ViewController {
 }
 
 
-// MARK: - Customise Camera Capture Session
 
-extension ViewController {
-    
-    func customiseCaptureScreen() {
-        
-        let viewHeight = self.view.frame.height
-        let viewWidth = self.view.frame.width
-        let cameraFrameHeight = viewHeight/2
-        let cameraFramWidth = viewWidth
-        let previewCameraFrame = CGRect(x: 0, y: viewHeight/2.5, width: cameraFramWidth, height: cameraFrameHeight)
-        
-        
-        
-        print(viewHeight, viewWidth)
-        
-        //Create a capture session
-        let captureSession = AVCaptureSession()
-        var previewLayer: AVCaptureVideoPreviewLayer?
-        
-        // Create a DrawLine Instance to Draw View Finder on camera
-        let drawLine = DrawLine(frame: previewCameraFrame)
-        drawLine.updateFrameDimension(frameHeight: cameraFrameHeight, frameWidth: cameraFramWidth)
-        
-        //Begin configuration
-        captureSession.beginConfiguration()
-        
-        //Find the default video device
-        guard let videoDevice = AVCaptureDevice.default(for: .video) else {
-            fatalError("Could not find default video device")
-        }
-        
-       
-        
-        do {
-            //Wrap the vidioe device in a capture device input
-            let videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
-            if captureSession.canAddInput(videoDeviceInput) {
-                captureSession.addInput(videoDeviceInput)
-            }
-            
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        let photoOutput = AVCapturePhotoOutput()
-        
-        guard captureSession.canAddOutput(photoOutput) else {
-            fatalError("Can not find photo output")
-        }
-        
-        captureSession.sessionPreset = .photo
-        captureSession.addOutput(photoOutput)
-        captureSession.commitConfiguration()
-        
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        
-        self.view.layer.addSublayer(previewLayer!)
-        previewLayer?.videoGravity = .resize
-        previewLayer?.frame = previewCameraFrame
-        self.view.addSubview(drawLine)
-        drawLine.setNeedsDisplay()
-       
-        
-        
-        captureSession.startRunning()
-        
-        
-        
-        
-    }
-    
-}
 
 

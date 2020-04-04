@@ -13,7 +13,7 @@ import AVFoundation
 
 class ViewController: UIViewController {
     
-    
+   
     
     // Outlets
  
@@ -89,7 +89,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
         if let pickedImage = info[.originalImage] as? UIImage {
             //displayPhoto.image = pickedImage
             let ciPickedImage = CIImage(image: pickedImage)!
-            processImage(using: ciPickedImage)
+            //processImage(using: ciPickedImage)
             
         } else {
             fatalError("Image not found")
@@ -101,39 +101,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     
 }
 
-// MARK: - Create Vision Request
 
-extension ViewController {
-    
-    // Create an Image Request Handler
-    func processImage(using ciImage: CIImage) {
-        
-        let imageRequestHandler = VNImageRequestHandler(ciImage: ciImage)
-        
-        // Create request
-        
-        let detectBarcodeRequest = [VNDetectBarcodesRequest(completionHandler: { (request, error) in
-            
-            if let results = request.results as? [VNBarcodeObservation] {
-                
-                print(results)
-                print(results[0].barcodeDescriptor ?? fatalError())
-                print(results[0].payloadStringValue!)
-                print(results[0].symbology)
-            }
-            
-            
-        })]
-        
-        do {
-            try imageRequestHandler.perform(detectBarcodeRequest)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        
-    }
-}
 
 
 

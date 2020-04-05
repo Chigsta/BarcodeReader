@@ -28,20 +28,7 @@ class ScannerViewController: UIViewController {
         displayCustomCameraView()
         self.videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "Sample Buffer"))
         
-        
-        // Do any additional setup after loading the view.
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
 
@@ -51,83 +38,59 @@ extension ScannerViewController {
     
     func displayCustomCameraView() {
         
-        //        let viewHeight = self.view.frame.height
-        //        let viewWidth = self.view.frame.width
-        //        let cameraFrameHeight = viewHeight/2
-        //        let cameraFramWidth = viewWidth
-        //let previewCameraFrame = customCameraView.bounds
-        
-        
-        //Create a capture session
-        
-        
-        
-        // Create a DrawLine Instance to Draw View Finder on camera
-        // let drawLine = DrawLine(frame: previewCameraFrame)
-        
-        
-        //Begin configuration
+        // Begin configuration
         captureSession.beginConfiguration()
         
-        
-        //Find the default video device
-        //        guard let videoDevice = AVCaptureDevice.default(for: .video) else {
-        //            fatalError("Could not find default video device")
-        //        }
-        
+        // Find video device
         guard let videoDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back).devices.first else {
             fatalError("Could not find suitable video device")
         }
         
-        
+        //  Configure video device
         do {
             try videoDevice.lockForConfiguration()
             videoDevice.focusMode = .continuousAutoFocus
             videoDevice.unlockForConfiguration()
-            
-            
         } catch {
             print(error.localizedDescription)
         }
         
+        // Add configured video device as input to the AVCaptureSession
         do {
-            //Wrap the vidioe device in a capture device input
+            
             let videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
             if captureSession.canAddInput(videoDeviceInput) {
                 captureSession.addInput(videoDeviceInput)
             }
-            
         } catch {
             print(error.localizedDescription)
         }
         
-        
-        
-        
-        
+        // Add video data as an output to the ACCaptureSession
         guard captureSession.canAddOutput(videoDataOutput) else {
             fatalError("Can not find photo output")
         }
         
-        captureSession.sessionPreset = .vga640x480
-        
         captureSession.addOutput(videoDataOutput)
         
+        // Configure capture session
+        captureSession.sessionPreset = .vga640x480
+        
+        // Commit capture session configuration
         captureSession.commitConfiguration()
         
+        // Create a preview to show cpature session on device and configure preview
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.videoGravity = .resizeAspectFill
         previewLayer.connection?.videoOrientation = .portrait
         
+        // Add privew as sublayer to customCameraView bounds
         rootLayer = customCameraView.layer
         previewLayer?.frame = rootLayer.bounds
         rootLayer.addSublayer(previewLayer)
         
-        
-        
-        
+        // Start capture session
         captureSession.startRunning()
-        
         
     }
     
@@ -163,23 +126,15 @@ extension ScannerViewController {
         let imageRequestHandler = VNImageRequestHandler(ciImage: ciImage)
         
         // Create request
-        
         let detectBarcodeRequest = [VNDetectBarcodesRequest(completionHandler: { (request, error) in
-            
             
             if let results = request.results as? [VNBarcodeObservation] {
                 
                 if results.count > 0 {
-                    
                     self.captureSession.stopRunning()
                     print(results)
                 }
-                
-                
-                
             }
-            
-            
         })]
         
         do {
@@ -188,7 +143,5 @@ extension ScannerViewController {
         } catch {
             print(error.localizedDescription)
         }
-        
-        
     }
 }
